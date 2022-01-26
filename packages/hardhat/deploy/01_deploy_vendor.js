@@ -10,31 +10,33 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   // You might need the previously deployed yourToken:
   const yourToken = await ethers.getContract("YourToken", deployer);
 
-  // Todo: deploy the vendor
-  // await deploy("Vendor", {
-  //   from: deployer,
-  //   args: [yourToken.address], // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   log: true,
-  // });
-  //
-  // const vendor = await ethers.getContract("Vendor", deployer);
+  // Deploy the vendor
+  await deploy("Vendor", {
+    from: deployer,
+    args: [yourToken.address], // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    log: true,
+  });
 
-  // Todo: transfer the tokens to the vendor
-  // console.log("\n 🏵  Sending all 1000 tokens to the vendor...\n");
-  //
-  // const transferTransaction = await yourToken.transfer(
-  //   vendor.address,
-  //   ethers.utils.parseEther("1000")
-  // );
+  const vendor = await ethers.getContract("Vendor", deployer);
 
-  //console.log("\n    ✅ confirming...\n");
-  //await sleep(5000); // wait 5 seconds for transaction to propagate
+  // Transfer the tokens to the vendor
+  console.log("\n 🏵  Sending all 1000 tokens to the vendor...\n");
 
-  // ToDo: change address to your frontend address vvvv
-  // console.log("\n 🤹  Sending ownership to frontend address...\n")
-  // const ownershipTransaction = await vendor.transferOwnership("0x155A7De8AF0895Bda50dA4cee35a97251164e286" );
-  // console.log("\n    ✅ confirming...\n");
-  // const ownershipResult = await ownershipTransaction.wait();
+  const transferTransaction = await yourToken.transfer(
+    vendor.address,
+    ethers.utils.parseEther("1000")
+  );
+
+  console.log("\n    ✅ confirming...\n");
+  await sleep(5000); // wait 5 seconds for transaction to propagate
+
+  // Change address to your frontend address vvvv
+  console.log("\n 🤹  Sending ownership to frontend address...\n");
+  const ownershipTransaction = await vendor.transferOwnership(
+    "0xa864e7CA8caC9a1DCF4f77C3217198119E27059a"
+  );
+  console.log("\n    ✅ confirming...\n");
+  const ownershipResult = await ownershipTransaction.wait();
 
   // ToDo: Verify your contract with Etherscan for public chains
   // if (chainId !== "31337") {
