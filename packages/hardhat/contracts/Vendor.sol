@@ -10,8 +10,6 @@ contract Vendor is Ownable {
 
   // Token price: how many tokens per ETH
   uint256 public tokensPerEth = 100;
-  uint256 public pricePerToken = 0.01 ether;
-
 
   event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
   event SellTokens(address seller, uint256 amountOfETH, uint256 amountOfTokens);
@@ -49,6 +47,26 @@ contract Vendor is Ownable {
     require(sent, "Failed to send ETH.");
   }
 
-  // ToDo: create a sellTokens() function:
+  // Sell tokens to the Vendor Contract
+  function sellTokens(uint256 _amountOfTokens) public {
+    require(_amountOfTokens > 0, "You've just sold 0 tokens for 0 ETH! If you want to get more ETH, try selling more than 0 tokens.");
 
+    // Check if the msg.sender has enough tokens
+    uint256 userTokens = yourToken.balanceOf(msg.sender);
+    require(userTokens >= _amountOfTokens, "You're trying to send more tokens than you have.");
+
+    // Check if Vendor has enough ETH to pay for the tokens
+    uint256 amountOfETHToPay = _amountOfTokens / tokensPerEth;
+    uint256 vendorETHBalance = address(this).balance;
+    require(vendorETHBalance >= amountOfETHToPay, "There's not enough funds to pay for this amount of tokens.");
+
+    // Transfer tokens to Vendor
+    require(yourToken.transferFrom(msg.sender, address(this), _amountOfTokens), "Failed to transfer tokens.");
+    // Transfer ETH to the user
+    (bool sent,) = msg.sender.call{value: amountOfETHToPay}("");
+    require(sent, "Failed to send ETH.");
+
+    // Emit the sell event
+    emit SellTokens(msg.sender, amountOfETHToPay, _amountOfTokens);
+  }
 }

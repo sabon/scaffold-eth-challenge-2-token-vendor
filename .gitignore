@@ -54,7 +54,9 @@ artifacts
 .DS_Store
 .env*
 .github/*
+.vscode
 .vscode/*
+.gitignore
 
 # debug
 npm-debug.log*
