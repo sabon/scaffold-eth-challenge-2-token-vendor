@@ -53,8 +53,8 @@ artifacts
 # misc
 .DS_Store
 .env*
-.github*
-.vscode*
+.github/*
+.vscode/*
 
 # debug
 npm-debug.log*
