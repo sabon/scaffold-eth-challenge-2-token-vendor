@@ -1,9 +1,14 @@
+This is my version of challenge solution for the scaffold-eth challenge.
+
+You can check it out in production here: https://token-vendor-velvetshark.surge.sh/
+
+---
+
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
 ## 🚩 Challenge 2: 🏵 Token Vendor 🤖
 
-
-> 🤖 Smart contracts are kind of like "always on" *vending machines* that **anyone** can access. Let's make a decentralized, digital currency. Then, let's build an unstoppable vending machine that will buy and sell the currency. We'll learn about the "approve" pattern for ERC20s and how contract to contract interactions work.  
+> 🤖 Smart contracts are kind of like "always on" _vending machines_ that **anyone** can access. Let's make a decentralized, digital currency. Then, let's build an unstoppable vending machine that will buy and sell the currency. We'll learn about the "approve" pattern for ERC20s and how contract to contract interactions work.
 
 > 🏵 Create `YourToken.sol` smart contract that inherits the **ERC20** token standard from OpenZeppelin. Set your token to `_mint()` **1000** (\* 10 \*\* 18) tokens to the `msg.sender`. Then create a `Vendor.sol` contract that sells your token using a payable `buyTokens()` function.
 
@@ -89,14 +94,14 @@ Edit `deploy/01_deploy_vendor.js` to deploy the `Vendor` (uncomment Vendor deplo
 
 ⚠️ this is because the Vendor contract doesn't have any YourTokens yet!
 
-⚔️ Side Quest: send tokens from your frontend address to the Vendor contract address and *then* try to buy them.
+⚔️ Side Quest: send tokens from your frontend address to the Vendor contract address and _then_ try to buy them.
 
 > ✏️ Edit `YourToken.sol` to transfer the tokens to the `msg.sender` (deployer) in the **constructor()**.
 
 > ✏️ Then, edit `deploy/01_deploy_vendor.js` to transfer 1000 tokens to `vendor.address`.
 
 ```js
-await yourToken.transfer( vendor.address, ethers.utils.parseEther("1000") );
+await yourToken.transfer(vendor.address, ethers.utils.parseEther("1000"));
 ```
 
 > You can `yarn deploy --reset` to deploy your contract until you get it right.
@@ -109,10 +114,9 @@ await yourToken.transfer( vendor.address, ethers.utils.parseEther("1000") );
 - [ ] Can you buy **10** tokens for **0.1** ETH?
 - [ ] Can you transfer tokens to a different account?
 
+> 📝 Edit `Vendor.sol` to inherit _Ownable_.
 
-> 📝 Edit `Vendor.sol` to inherit *Ownable*.
-
-In `deploy/01_deploy_vendor.js` you will need to call `transferOwnership()` on the `Vendor` to make *your frontend address* the `owner`:
+In `deploy/01_deploy_vendor.js` you will need to call `transferOwnership()` on the `Vendor` to make _your frontend address_ the `owner`:
 
 ```js
 await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
@@ -143,7 +147,7 @@ await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
 
 😕 First, the user has to call `approve()` on the `YourToken` contract, approving the `Vendor` contract address to take some amount of tokens.
 
-🤨 Then, the user makes a *second transaction* to the `Vendor` contract to `sellTokens(uint256 amount)`.
+🤨 Then, the user makes a _second transaction_ to the `Vendor` contract to `sellTokens(uint256 amount)`.
 
 🤓 The `Vendor` should call `yourToken.transferFrom(msg.sender, address(this), theAmount)` and if the user has approved the `Vendor` correctly, tokens should transfer to the `Vendor` and ETH should be sent to the user.
 
@@ -163,9 +167,9 @@ await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
 #### ⚔️ Side Quest
 
 - [ ] Should we disable the `owner` withdraw to keep liquidity in the `Vendor`?
-- [ ] It would be a good idea to display Sell Token Events.  Create the `event` and `emit` it in your `Vendor.sol` and look at `buyTokensEvents` in your `App.jsx` for an example of how to update your frontend.
+- [ ] It would be a good idea to display Sell Token Events. Create the `event` and `emit` it in your `Vendor.sol` and look at `buyTokensEvents` in your `App.jsx` for an example of how to update your frontend.
 
-----
+---
 
 ### Checkpoint 5: 💾 Deploy it! 🛰
 
@@ -182,6 +186,7 @@ await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
 🔬 Inspect the block explorer for the network you deployed to... make sure your contract is there.
 
 ---
+
 ### Checkpoint 6: 🚢 Ship it! 🚁
 
 📦 Run `yarn build` to package up your frontend.
@@ -193,6 +198,7 @@ await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
 🎖 Show off your app by pasting the url in the [Challenge 2 telegram channel](https://t.me/joinchat/IfARhZFc5bfPwpjq) 🎖
 
 ---
+
 ### Checkpoint 7: 📜 Contract Verification
 
 Update the `api-key` in `packages/hardhat/package.json`. You can get your key [here](https://etherscan.io/myapikey).
